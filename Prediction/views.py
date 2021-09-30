@@ -37,9 +37,13 @@ class Add_Values(APIView):
 
 from .apps import PredictionConfig
 import pandas as pd
+from rest_framework.permissions import IsAuthenticated
+from .throttles import LimitedRateThrottle, BurstRateThrottle
 
 # Class based view to predict based on IRIS model
 class IRIS_Model_Predict(APIView):
+    permission_classes = [IsAuthenticated]
+    throttle_classes = [LimitedRateThrottle]
     def post(self, request, format=None):
         data = request.data
         keys = []
